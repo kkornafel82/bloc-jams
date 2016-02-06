@@ -28,6 +28,21 @@ var albumMarconi = {
    ]
 };
 
+var albumOasis = {
+   name: 'Definitely Maybe',
+   artist: 'Oasis',
+   label: 'Creation',
+   year: '1994',
+   albumArtUrl: 'assets/images/album_covers/definitely_maybe.jpeg',
+   songs: [
+       { name: 'Rock N Roll Star', length: '1:00' },
+       { name: 'Shakermaker', length: '5:01' },
+       { name: 'Live Forever', length: '3:21'},
+       { name: 'Up in the Sky', length: '3:14' },
+       { name: 'Columbia', length: '2:15'}
+   ]
+};
+
 var createSongRow = function(songNumber, songName, songLength) {
    var template =
       '<tr class="album-view-song-item">'
@@ -40,15 +55,14 @@ var createSongRow = function(songNumber, songName, songLength) {
    return template;
 };
 
-var setCurrentAlbum = function(album) {
-   // #1
-   var albumTitle = document.getElementsByClassName('album-view-title')[0];
-   var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-   var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-   var albumImage = document.getElementsByClassName('album-cover-art')[0];
-   var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+var albumTitle = document.getElementsByClassName('album-view-title')[0];
+var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+var albumImage = document.getElementsByClassName('album-cover-art')[0];
+var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
 
-   // #2
+var setCurrentAlbum = function(album) {
+   
    albumTitle.firstChild.nodeValue = album.name;
    albumArtist.firstChild.nodeValue = album.artist;
    albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
@@ -63,7 +77,20 @@ var setCurrentAlbum = function(album) {
    }
 };
  
+ albums = [albumPicasso, albumMarconi, albumOasis]
+ index = 1
+
  window.onload = function() {
-     setCurrentAlbum(albumPicasso);
+  setCurrentAlbum(albumPicasso);
+
+  albumImage.addEventListener('click', function(event) {
+    setCurrentAlbum(albums[index]);
+    index++;
+    if (index == albums.length) {
+      index = 0;
+    }
+   }); 
+
+     
  };
 
