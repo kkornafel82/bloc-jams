@@ -58,12 +58,13 @@ var createSongRow = function(songNumber, songName, songLength) {
        if (currentSoundFile.isPaused()) {
           $(this).html(pauseButtonTemplate);
           $('.main-controls .play-pause').html(playerBarPauseButton);
-          currentSoundFile.play();
-     } else {
+          currentSoundFile.play(); 
+        } 
+       else {
           $(this).html(playButtonTemplate);
           $('.main-controls .play-pause').html(playerBarPlayButton);
           currentSoundFile.pause();
-      }
+        }
     } 
        
   };
