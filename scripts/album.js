@@ -39,7 +39,7 @@ var createSongRow = function(songNumber, songName, songLength) {
    var $row = $(template);
 
   var clickHandler = function() {
-    var songNumber = $(this).attr('data-song-number');
+    var songNumber = parseInt($(this).attr('data-song-number'), 10);
 
     if (currentlyPlayingSongNumber !== null) {
       // Revert to song number for currently playing song because user started playing new song.
@@ -199,7 +199,10 @@ var previousSong = function() {
 
 var togglePlayFromPlayerBar = function() {
   var $currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
-  if (currentSoundFile.isPaused()) {
+  if (currentSoundFile === null) {
+    nextSong();
+  }
+  else if (currentSoundFile.isPaused()) {
     $currentlyPlayingCell.html(pauseButtonTemplate);
     $(this).html(playerBarPauseButton);
     currentSoundFile.play();
