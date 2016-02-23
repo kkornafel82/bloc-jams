@@ -38,7 +38,7 @@ var createSongRow = function(songNumber, songName, songLength) {
       '<tr class="album-view-song-item">'
     + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
     + '  <td class="song-item-title">' + songName + '</td>'
-    + '  <td class="song-item-duration">' + songLength + '</td>'
+    + '  <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>'
     + '</tr>'
     ;
 
@@ -130,15 +130,39 @@ var setCurrentAlbum = function(album) {
    }
 };
 
+var filterTimeCode = function(timeInSeconds) {
+  var seconds = Number.parseFloat(timeInSeconds);
+  var wholeSeconds = Math.floor(seconds);
+  var minutes = Math.floor(wholeSeconds / 60);
+  var remainingSeconds = wholeSeconds % 60;
+
+  var output = minutes + ':';
+
+  if (remainingSeconds < 10){
+    output += '0';
+  }
+
+  output += remainingSeconds;
+
+  return output;
+};
+
 var updateSeekBarWhileSongPlays = function() {
+   var setCurrentTimeInPlayerBar = function(currentTime) {
+    $('.current-time').text(currentTime);
+   }
+
    if (currentSoundFile) {
        // #10
        currentSoundFile.bind('timeupdate', function(event) {
            // #11
            var seekBarFillRatio = this.getTime() / this.getDuration();
            var $seekBar = $('.seek-control .seek-bar');
+           var currentTime = this.getTime();
+
 
            updateSeekPercentage($seekBar, seekBarFillRatio);
+           setCurrentTimeInPlayerBar(filterTimeCode(currentTime));
        });
    }
 };
@@ -204,10 +228,17 @@ var setupSeekBars = function() {
  };
 
 var updatePlayerBarSong = function() {
+    var setTotalTimeInPlayerBar = function(totalTime) {
+      $('.total-time').text(totalTime)
+    };
+    var totalTime = currentSongFromAlbum.length;
+
     $('.currently-playing .song-name').text(currentSongFromAlbum.name);
     $('.currently-playing .artist-name').text(currentAlbum.artist);
     $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.name + " - " + currentAlbum.artist);
     $('.main-controls .play-pause').html(playerBarPauseButton);
+    setTotalTimeInPlayerBar(filterTimeCode(totalTime));
+
 };
 
 var nextSong = function() {
